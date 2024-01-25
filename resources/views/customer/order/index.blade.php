@@ -13,14 +13,14 @@
                     <th>Date</th>
                     <th>Total</th>
                     <th>Status</th>
-                    <th>action</th>
+                    <th>Action</th>
                 </thead>
                 <tbody>
                     @foreach ($orders as $order)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $order->order_code }}</td>
-                            <td>{{ date_format(date_create($order->date), 'd-m-Y') }}</td>
+                            <td>{{ date_format(date_create($order->created_at), 'd-m-Y') }}</td>
                             <td>{{ convertToRupiah($order->payment->total) }}</td>
                             <td>{{ $order->status }}</td>
                                 <td>
@@ -111,7 +111,7 @@
                 });
             }).draw();
 
-            $('.btn-detail').click(function() {
+            $('body').on('click', '.btn-detail', function() {
                 let orderId = $(this).data('id')
                 $('#tableDetail tbody').empty()
                 $.get("/customer/order/detail/"+orderId, function (data) {

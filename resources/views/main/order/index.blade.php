@@ -28,7 +28,7 @@
                             <th>Date</th>
                             <th>Total</th>
                             <th>Status</th>
-                            <th>action</th>
+                            <th>Action</th>
                         </thead>
                         <tbody>
                             @foreach ($orders as $order)
@@ -166,10 +166,10 @@
                 $('#modalPrint').modal('show');
             })
 
-            $('.btn-detail').click(function() {
+            $('body').on('click', '.btn-detail', function() {
                 let orderId = $(this).data('id')
                 $('#tableDetail tbody').empty()
-                $.get("/customer/order/detail/"+orderId, function (data) {
+                $.get("/order/detail/"+orderId, function (data) {
                     $.each(data, function (index, value) {
                         let tr_list = '<tr>' +
                                         '<td>' + (index+1) + '</td>' +
