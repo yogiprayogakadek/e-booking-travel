@@ -43,7 +43,7 @@ class PackageController extends Controller
                     'associatedModel' => $package,
                     'attributes' => [
                         'order_date' => $request->order_date,
-                        'order_message' => $request->message
+                        'order_message' => $request->order_message
                     ]
                 ]);
 

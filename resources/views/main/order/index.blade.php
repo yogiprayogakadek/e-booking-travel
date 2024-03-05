@@ -38,11 +38,11 @@
                                     <td>{{ date_format(date_create($order->date), 'd-m-Y') }}</td>
                                     <td>{{ convertToRupiah($order->payment->total) }}</td>
                                     <td>{{ $order->status }}</td>
-                                        <td>
-                                            <button class="btn btn-detail btn-primary" data-id="{{$order->id}}">
-                                                <i class="fa fa-eye text-white mr-2 pointer"></i> Detail
-                                            </button>
-                                        </td>
+                                    <td>
+                                        <button class="btn btn-detail btn-primary" data-id="{{ $order->id }}">
+                                            <i class="fa fa-eye text-white mr-2 pointer"></i> Detail
+                                        </button>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -71,6 +71,10 @@
                                 <tr>
                                     <th>No</th>
                                     <th>Tourist Name</th>
+                                    <th>Customer Name</th>
+                                    <th>Email</th>
+                                    <th>Order Date</th>
+                                    <th>Order Message</th>
                                     <th>Quantity</th>
                                     <th>Price </th>
                                     <th>Total </th>
@@ -169,15 +173,20 @@
             $('body').on('click', '.btn-detail', function() {
                 let orderId = $(this).data('id')
                 $('#tableDetail tbody').empty()
-                $.get("/order/detail/"+orderId, function (data) {
-                    $.each(data, function (index, value) {
+                $.get("/order/detail/" + orderId, function(data) {
+                    $.each(data, function(index, value) {
                         let tr_list = '<tr>' +
-                                        '<td>' + (index+1) + '</td>' +
-                                        '<td>' + $.parseJSON(value.package.detail)['name'] + '</td>' +
-                                        '<td>' + value.quantity + '</td>' +
-                                        '<td>' + convertToRupiah(value.package.price) + '</td>' +
-                                        '<td class="sub-total text-right">' + convertToRupiah(value.package.price * value.quantity) + '</td>' +
-                                    '</tr>';
+                            '<td>' + (index + 1) + '</td>' +
+                            '<td>' + $.parseJSON(value.package.detail)['name'] + '</td>' +
+                            '<td>' + value.order.customer.email + '</td>' +
+                            '<td>' + value.order.customer.name + '</td>' +
+                            '<td>' + value.order_date + '</td>' +
+                            '<td>' + (value.order_message ?? '-') + '</td>' +
+                            '<td>' + value.quantity + '</td>' +
+                            '<td>' + convertToRupiah(value.package.price) + '</td>' +
+                            '<td class="sub-total text-right">' + convertToRupiah(value
+                                .package.price * value.quantity) + '</td>' +
+                            '</tr>';
 
                         $('#tableDetail tbody').append(tr_list)
                     });
@@ -188,15 +197,16 @@
                     let subTotal = $('.sub-total').text().split('Rp');
                     let total = 0;
                     subTotal.shift()
-                    $.each(subTotal, function (index, val) {
+                    $.each(subTotal, function(index, val) {
                         total += convertToInt(val)
                     });
 
                     let new_tr = '<tr>' +
-                                    '<td colspan="4" class="font-italic font-weight-800 text-right">Total</td>' +
-                                    '<td class="font-italic font-weight-800 text-right">'+convertToRupiah(total)+'</td>' +
-                                '</tr>';
-                                $('#tableDetail tbody').append(new_tr)
+                        '<td colspan="8" class="font-italic font-weight-800 text-right">Total</td>' +
+                        '<td class="font-italic font-weight-800 text-right">' + convertToRupiah(
+                            total) + '</td>' +
+                        '</tr>';
+                    $('#tableDetail tbody').append(new_tr)
                 }, 1000);
             });
         });
