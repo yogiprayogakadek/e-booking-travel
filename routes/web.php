@@ -57,6 +57,7 @@ Route::namespace('Customer')->prefix('customer')->as('customer.')->middleware(['
         ->group(function () {
             Route::get('/', 'index')->name('index');
             Route::post('/store', 'store')->name('store');
+            Route::get('/order-quantity/{data}', 'orderQuantity')->name('order.quantity');
         });
 
     Route::controller(CartController::class)

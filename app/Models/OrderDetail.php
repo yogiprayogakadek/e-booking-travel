@@ -13,9 +13,11 @@ class OrderDetail extends Model
     protected $primaryKey = 'id';
     public $incrementing = false;
     protected $keyType = 'string';
-    protected $fillable = [
-        'order_id', 'package_id', 'quantity'
-    ];
+    // protected $fillable = [
+    //     'order_id', 'package_id', 'quantity'
+    // ];
+
+    protected $guarded = ['id'];
 
     protected static function boot() {
         parent::boot();

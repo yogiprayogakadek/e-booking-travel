@@ -12,9 +12,11 @@
 @endsection
 
 @push('script')
-    <script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.7/dist/loadingoverlay.min.js"></script>
-    <script src = "{{ asset('assets/helper/main.js') }}" >
-    <script src="{{ asset('assets/helper/bootstrap-touchspin/jquery.bootstrap-touchspin.min.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.7/dist/loadingoverlay.min.js">
+    </script>
+    <script src="{{ asset('assets/helper/main.js') }}">
+        < script src = "{{ asset('assets/helper/bootstrap-touchspin/jquery.bootstrap-touchspin.min.js') }}" >
+    </script>
     <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="SB-Mid-client-WLa4T_aeiQfLdfyC"></script>
     <script>
         function getData() {
@@ -74,51 +76,105 @@
 
             $('body').on('click', '.quantity-update', function() {
                 var id = $(this).data('id');
+                var prevQty = $(this).data('qty');
                 var cat = $(this).data('cat');
-                var qty = (cat == 'up' ? parseInt(parseInt($(this).closest('.input-group').find('.quantity')
-                    .val())) + 1 : parseInt(parseInt($(this).closest('.input-group').find(
-                    '.quantity').val())) - 1);
-                $.ajax({
-                    url: '/customer/cart/update',
-                    type: 'POST',
-                    data: {
-                        id: id,
-                        quantity: qty,
-                        _token: $('meta[name="csrf-token"]').attr('content')
-                    },
-                    success: function(result) {
-                        Swal.fire(
-                            result.title,
-                            result.message,
-                            result.status
-                        )
-                        getData()
+                var date = $(this).data('date');
+                let data = id + '%' + date;
+                let maxQuantity = 8;
+                var that = this;
+
+                $.get("/customer/package/order-quantity/" + data, function(quantity) {
+                    let currentQuantity = parseInt(quantity)
+                    var qty = (cat == 'up' ? parseInt(parseInt($(that).closest('.input-group').find(
+                            '.quantity')
+                        .val())) + 1 : parseInt(parseInt($(that).closest('.input-group')
+                        .find(
+                            '.quantity').val())) - 1);
+                    if ((qty + currentQuantity) > maxQuantity) {
+                        parseInt($(that).closest('.input-group').find('.quantity').val(prevQty))
+                        Swal.fire({
+                            title: 'The  quantity is exceeded the limit!',
+                            text: "Only 8 allow everyday and now already  have " +
+                                currentQuantity + " package.",
+                            // text: "You can only add  up to " + (maxQuantity -
+                            //     currentQuantity) + " more items.",
+                            icon: "warning"
+                        })
+                    } else {
+                        if (qty == 0) {
+                            parseInt($(that).closest('.input-group').find('.quantity').val(prevQty))
+                        } else {
+                            $.ajax({
+                                url: '/customer/cart/update',
+                                type: 'POST',
+                                data: {
+                                    id: id,
+                                    quantity: qty,
+                                    _token: $('meta[name="csrf-token"]').attr('content')
+                                },
+                                success: function(result) {
+                                    Swal.fire(
+                                        result.title,
+                                        result.message,
+                                        result.status
+                                    )
+                                    getData()
+                                }
+                            });
+                        }
                     }
                 });
             });
 
+            $('body').on('focus', '.quantity', function() {
+                $(this).data('prevQuantity', parseInt($(this).val()));
+            });
+
             $('body').on('blur', '.quantity', function() {
                 var id = $(this).data('id');
+                var date = $(this).data('date');
+                var prevQty = $(this).data('prevQuantity');
                 var qty = parseInt($(this).val());
-                // var cat = 'plus';
-                $.ajax({
-                    url: '/customer/cart/update',
-                    type: 'POST',
-                    data: {
-                        id: id,
-                        quantity: qty,
-                        // cat: cat,
-                        _token: $('meta[name="csrf-token"]').attr('content')
-                    },
-                    success: function(result) {
-                        Swal.fire(
-                            result.title,
-                            result.message,
-                            result.status
-                        )
-                        getData()
+
+                let maxQuantity = 8;
+
+                var that = this;
+
+                let data = id + '%' + date;
+                $.get("/customer/package/order-quantity/" + data, function(quantity) {
+                    let currentQuantity = parseInt(quantity)
+
+                    // console.log(qty)
+                    if ((qty + currentQuantity) > maxQuantity) {
+                        $(that).val(prevQty);
+                        Swal.fire({
+                            title: 'The  quantity is exceeded the limit!',
+                            text: "You can only add  up to " + (maxQuantity -
+                                currentQuantity) + " more items.",
+                            icon: "warning"
+                        })
+                    } else {
+                        $.ajax({
+                            url: '/customer/cart/update',
+                            type: 'POST',
+                            data: {
+                                id: id,
+                                quantity: qty,
+                                // cat: cat,
+                                _token: $('meta[name="csrf-token"]').attr('content')
+                            },
+                            success: function(result) {
+                                Swal.fire(
+                                    result.title,
+                                    result.message,
+                                    result.status
+                                )
+                                getData()
+                            }
+                        });
                     }
                 });
+
             });
 
             $('body').on('click', '.btn-process', function() {

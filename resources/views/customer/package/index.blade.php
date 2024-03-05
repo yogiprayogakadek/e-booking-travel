@@ -60,7 +60,8 @@
 
 @section('modal')
     <!-- Modal -->
-    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+    <div class="modal fade" id="modal" tabindex="-1" role="dialog" data-backdrop="static"
+        aria-labelledby="modelTitleId" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -80,15 +81,40 @@
                         <div class="col-3 mt-3">Tourist Price</div>
                         <div class="col-9 mt-3 tourist-price"></div>
 
-                        <div class="col-3 mt-3">Quantity</div>
+                        <div class="col-3 mt-3">Name</div>
                         <div class="col-9 mt-3">
-                            <input type="number" name="quantity" id="quantity" class="form-control" autocomplete="off">
+                            <input type="text" name="customer_name" id="customer_name" class="form-control customer-name"
+                                readonly value="{{ auth()->user()->name }}">
+                        </div>
+
+                        <div class="col-3 mt-3">Email</div>
+                        <div class="col-9 mt-3">
+                            <input type="text" name="customer_email" id="customer_email"
+                                class="form-control customer-email" readonly value="{{ auth()->user()->email }}">
+                        </div>
+
+                        <div class="col-3 mt-3">Order Date</div>
+                        <div class="col-9 mt-3">
+                            <input type="date" name="order_date" id="order_date" class="form-control order-date"
+                                min="{{ date('Y-m-d') }}">
+                        </div>
+
+                        <div class="col-3 mt-3 will-hide">Quantity</div>
+                        <div class="col-9 mt-3 will-hide">
+                            <input type="number" name="quantity" id="quantity" class="form-control quantity"
+                                autocomplete="off">
+                            <div class="invalid-feedback error-quantity"></div>
+                        </div>
+
+                        <div class="col-3 mt-3 will-hide">Order Message</div>
+                        <div class="col-9 mt-3 will-hide">
+                            <textarea name="message" id="message" class="form-control" rows="5"></textarea>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
-                    <button type="button" class="btn btn-primary btn-add">Add to Cart</button>
+                    <button type="button" class="btn btn-primary btn-add" disabled>Add to Cart</button>
                 </div>
             </div>
         </div>
@@ -108,6 +134,8 @@
             });
         }
         $(document).ready(function() {
+            $('.will-hide').prop('hidden', true)
+
             localStorage.clear();
 
             $('body').on('click', '.pagination a', function(e) {
@@ -117,8 +145,16 @@
             });
 
             $('.btn-detail').click(function() {
+                $('.quantity').removeClass('is-invalid');
+                $('.error-quantity').html('');
+                $('.btn-add').prop('disabled', true)
+                $('.will-hide').prop('hidden', true)
+                $('.quantity').val('')
+                $('.order-date').val('')
+
                 localStorage.setItem('package_id', $(this).data('id'));
 
+                $('#modal .modal-title').text('Form Order Package Tour ' + $(this).data('name'))
                 // set detail
                 $('#modal .tourist-name').text($(this).data('name'))
                 $('#modal .tourist-address').text($(this).data('address'))
@@ -127,10 +163,51 @@
                 $('#modal').modal('show');
             });
 
+            $('body').on('change', '.order-date', function() {
+                if ($(this).val() != '') {
+                    $('.will-hide').prop('hidden', false);
+
+                    let package_id = localStorage.getItem('package_id');
+                    let date = $(this).val();
+                    let data = package_id + '%' + date;
+                    $.get("/customer/package/order-quantity/" + data, function(quantity) {
+                        localStorage.setItem('currentQuantity', quantity);
+                    });
+                } else {
+                    $('.will-hide').prop('hidden', true);
+                }
+            });
+
+            $('body').on('change', '.quantity', function() {
+                let maxQuantity = 8;
+                let currentQuantity = localStorage.getItem('currentQuantity')
+                let quantity = (parseInt($(this).val()) + parseInt(currentQuantity));
+
+                if ($(this).val() != '') {
+                    if (parseInt(quantity) > maxQuantity) {
+                        $('.quantity').addClass('is-invalid');
+                        $('.error-quantity').html(
+                            'Quantity for today reach max quantity to order. Only <strong>' + (
+                                maxQuantity -
+                                currentQuantity) + '</strong> can be order');
+                        $('.btn-add').prop('disabled', true)
+                    } else {
+                        $('.quantity').removeClass('is-invalid');
+                        $('.error-quantity').html('');
+                        $('.btn-add').prop('disabled', false)
+
+                    }
+                } else {
+                    $('.quantity').addClass('is-invalid');
+                    $('.error-quantity').html('Please enter quantity');
+                    $('.btn-add').prop('disabled', true)
+                }
+            })
+
             $('body').on('click', '.btn-add', function(e) {
                 var id = localStorage.getItem('package_id');
 
-                if($('input[name=quantity]').val() == '' || $('input[name=quantity]').val() <= 0) {
+                if ($('input[name=quantity]').val() == '' || $('input[name=quantity]').val() <= 0) {
                     e.preventDefault()
                     Swal.fire({
                         icon: 'error',
@@ -152,6 +229,8 @@
                     var formData = new FormData();
                     formData.append('package_id', id);
                     formData.append('quantity', $('input[name=quantity]').val());
+                    formData.append('order_date', $('input[name=order_date]').val());
+                    formData.append('order_message', $('textarea[name=message]').val());
                     formData.append('_token', $('meta[name="csrf-token"]').attr('content'));
                     if (result.isConfirmed) {
                         $.ajax({

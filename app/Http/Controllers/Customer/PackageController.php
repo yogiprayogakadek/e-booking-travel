@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
+use App\Models\OrderDetail;
 use App\Models\Package;
 use Illuminate\Http\Request;
 
@@ -23,6 +24,7 @@ class PackageController extends Controller
 
     public function store(Request $request)
     {
+        // dd($request->all());
         $user_id = auth()->user()->id;
         $package = Package::find($request->package_id);
         try {
@@ -39,6 +41,10 @@ class PackageController extends Controller
                     'price' => $package->price,
                     'quantity' => $request->quantity,
                     'associatedModel' => $package,
+                    'attributes' => [
+                        'order_date' => $request->order_date,
+                        'order_message' => $request->message
+                    ]
                 ]);
 
                 return response()->json([
@@ -54,5 +60,17 @@ class PackageController extends Controller
                 'title' => 'Gagal',
             ]);
         }
+    }
+
+    public function orderQuantity($param) {
+        $data = explode(' ', $param);
+        $package_id = $data[0];
+        $date = $data[1];
+
+        $quantity = OrderDetail::where('package_id', $package_id)
+                    ->whereDate('order_date', $date)
+                    ->sum('quantity');
+
+        return response()->json($quantity);
     }
 }

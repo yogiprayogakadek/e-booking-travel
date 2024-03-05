@@ -49,13 +49,6 @@ class CartController extends Controller
     {
         $user_id = auth()->user()->id;
         $package = Package::find($request->id);
-        // if ($request->quantity > $buku->stok_buku) {
-        //     return response()->json([
-        //         'status' => 'info',
-        //         'message' => 'Stok tidak mencukupi, stok yang tersedia ' . $buku->stok_buku,
-        //         'title' => 'Info',
-        //     ]);
-        // } else {
             \Cart::session($user_id)->update($request->id, [
                 'quantity' => [
                     'relative' => false,
@@ -89,7 +82,9 @@ class CartController extends Controller
                 OrderDetail::create([
                     'order_id' => $order->id,
                     'package_id' => $value->associatedModel['id'],
-                    'quantity' => $value->quantity
+                    'quantity' => $value->quantity,
+                    'order_date' => $value->attributes['order_date'],
+                    'order_message' => $value->attributes['order_message'],
                 ]);
             }
 
