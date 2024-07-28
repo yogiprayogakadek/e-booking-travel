@@ -148,7 +148,7 @@
                             <h4 style="margin-top: 5px; margin-bottom: 5px">
                                 Report generate to list all orders
                             </h4>
-                            <p>Tourist Order Management, Reporting, and Analysis System for Enhanced Tourism Services"
+                            <p>Destination Order Management, Reporting, and Analysis System for Enhanced Tourism Services"
 
                             </p>
                         </div>
@@ -198,11 +198,11 @@
                 <tr>
                     <th style="width: 50px">#</th>
                     <th style="width: 150px">
-                        <h4>Tourist Name</h4>
+                        <h4>Destination Name</h4>
                     </th>
                     <th style="width: 80px" colspan="2">
                         <h4>
-                            Tourist Address
+                            Destination Address
                         </h4>
                     </th>
                     <th style="width: 60px" colspan="2">
@@ -270,7 +270,7 @@
         <table class="hm-p table-bordered" style="width: 100%; margin-top: 30px">
             <tr>
                 <th style="width: 500px">
-                    Tourist Total
+                    Package Total
                 </th>
                 <td style="vertical-align: top; color: #000">
                     <b>{{$total}}</b>

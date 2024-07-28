@@ -20,7 +20,11 @@
                     <p class="mt-0">{{ucfirst(auth()->user()->role)}}</p>
                     <p>Hello and welcome! Wishing you a wonderful day filled with positivity and joy. 😊</p>
                     <a href="{{auth()->user()->role == 'customer' ? route('customer.package.index') : route('package.index')}}">
-                        <button class="btn btn-primary btn-rounded">Find best tourist</button>
+                        @if (auth()->user()->role == 'customer')
+                        <button class="btn btn-primary btn-rounded">Find best destination</button>
+                        @else
+                        <button class="btn btn-primary btn-rounded">Find list destination</button>
+                        @endif
                     </a>
                     <div class="card-socials-simple mt-4">
                         Aris Bali Explorer

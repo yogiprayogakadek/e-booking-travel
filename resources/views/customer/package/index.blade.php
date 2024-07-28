@@ -65,21 +65,21 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Detail Tourist</h5>
+                    <h5 class="modal-title">Detail Destination</h5>
                     <button type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close">
                         <i class="fa fa-times"></i>
                     </button>
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-3">Tourist Name</div>
-                        <div class="col-9 tourist-name"></div>
+                        <div class="col-3">Destination Name</div>
+                        <div class="col-9 destination-name"></div>
 
-                        <div class="col-3 mt-3">Tourist Address</div>
-                        <div class="col-9 mt-3 tourist-address"></div>
+                        <div class="col-3 mt-3">Destination Address</div>
+                        <div class="col-9 mt-3 destination-address"></div>
 
-                        <div class="col-3 mt-3">Tourist Price</div>
-                        <div class="col-9 mt-3 tourist-price"></div>
+                        <div class="col-3 mt-3">Destination Price</div>
+                        <div class="col-9 mt-3 destination-price"></div>
 
                         <div class="col-3 mt-3">Name</div>
                         <div class="col-9 mt-3">
@@ -156,9 +156,9 @@
 
                 $('#modal .modal-title').text('Form Order Package Tour ' + $(this).data('name'))
                 // set detail
-                $('#modal .tourist-name').text($(this).data('name'))
-                $('#modal .tourist-address').text($(this).data('address'))
-                $('#modal .tourist-price').text($(this).data('price'))
+                $('#modal .destination-name').text($(this).data('name'))
+                $('#modal .destination-address').text($(this).data('address'))
+                $('#modal .destination-price').text($(this).data('price'))
 
                 $('#modal').modal('show');
             });

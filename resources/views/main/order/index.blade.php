@@ -59,7 +59,7 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Detail Tourist</h5>
+                    <h5 class="modal-title">Detail Destination</h5>
                     <button type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close">
                         <i class="fa fa-times"></i>
                     </button>
@@ -70,7 +70,7 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Tourist Name</th>
+                                    <th>Destination Name</th>
                                     <th>Customer Name</th>
                                     <th>Email</th>
                                     <th>Order Date</th>

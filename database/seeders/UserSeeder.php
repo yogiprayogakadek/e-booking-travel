@@ -25,14 +25,14 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Customer',
                 'phone' => '082237188923',
-                'photo' => 'assets/uploads/users/default.png',
+                'photo' => 'assets/uploads/users/customer.png',
                 'email' => 'customer@gmail.com',
                 'password' => bcrypt(12345678),
                 'role' => 'Customer',
             ],
         ];
 
-        foreach($users as $user) {
+        foreach ($users as $user) {
             User::create($user);
         }
     }
