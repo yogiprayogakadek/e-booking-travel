@@ -9,7 +9,7 @@
         <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
         <meta content="Themesbrand" name="author" />
         <!-- App favicon -->
-        <link rel="shortcut icon" href="{{asset('assets/images/logo.png')}}" type="image/png" />
+        <link rel="shortcut icon" href="{{asset('assets/images/logo.jpg')}}" type="image/png" />
 
         <!-- Bootstrap Css -->
         <link href="{{asset('assets/styles/css/login/auth/bootstrap.min.css')}}" id="bootstrap-style" rel="stylesheet" type="text/css" />
@@ -44,7 +44,7 @@
                                         </div>
                                     </div>
                                     <div class="col-5 align-self-end">
-                                        <img src="{{asset('assets/images/logo.png')}}" alt="" class="img-fluid">
+                                        <img src="{{asset('assets/images/logo.jpg')}}" alt="" class="img-fluid">
                                     </div>
                                 </div>
                             </div>
@@ -53,7 +53,7 @@
                                     <a href="{{route('login')}}" class="auth-logo-light">
                                         <div class="avatar-md profile-user-wid mb-4">
                                             <span class="avatar-title rounded-circle bg-light">
-                                                <img src="{{asset('assets/images/logo.png')}}" alt="" class="rounded-circle" height="34">
+                                                <img src="{{asset('assets/images/logo.jpg')}}" alt="" class="rounded-circle" height="34">
                                             </span>
                                         </div>
                                     </a>
@@ -61,7 +61,7 @@
                                     <a href="{{route('login')}}" class="auth-logo-dark">
                                         <div class="avatar-md profile-user-wid mb-4">
                                             <span class="avatar-title rounded-circle bg-light">
-                                                <img src="{{asset('assets/images/logo.png')}}" alt="" class="rounded-circle" height="34">
+                                                <img src="{{asset('assets/images/logo.jpg')}}" alt="" class="rounded-circle" height="34">
                                             </span>
                                         </div>
                                     </a>

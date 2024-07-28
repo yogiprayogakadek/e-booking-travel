@@ -126,7 +126,7 @@
                   font-size: 14px;
                   color: #4a4a4a;
                 ">
-                            <img src="{{ public_path('assets/images/logo.png') }}" width="150px">
+                            <img src="{{ public_path('assets/images/logo.jpg') }}" width="150px">
 
                             <p style="font-weight: bold; margin-top: 15px">
                                 Aris Bali Explorer
