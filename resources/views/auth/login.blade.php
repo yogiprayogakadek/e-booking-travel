@@ -6,7 +6,7 @@
         <meta charset="utf-8" />
         <title>Aris Bali Explorer | Login</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
+        <meta content="Place to book favorite tourist destinations in Bali!" name="description" />
         <meta content="Themesbrand" name="author" />
         <!-- App favicon -->
         <link rel="shortcut icon" href="{{asset('assets/images/logo.jpg')}}" type="image/png" />
@@ -53,7 +53,7 @@
                                     <a href="{{route('login')}}" class="auth-logo-light">
                                         <div class="avatar-md profile-user-wid mb-4">
                                             <span class="avatar-title rounded-circle bg-light">
-                                                <img src="{{asset('assets/images/logo.jpg')}}" alt="" class="rounded-circle" height="34">
+                                                <img src="{{asset('assets/images/logo.jpg')}}" alt="" class="rounded-circle" height="72">
                                             </span>
                                         </div>
                                     </a>
@@ -61,7 +61,7 @@
                                     <a href="{{route('login')}}" class="auth-logo-dark">
                                         <div class="avatar-md profile-user-wid mb-4">
                                             <span class="avatar-title rounded-circle bg-light">
-                                                <img src="{{asset('assets/images/logo.jpg')}}" alt="" class="rounded-circle" height="34">
+                                                <img src="{{asset('assets/images/logo.jpg')}}" alt="" class="rounded-circle" height="72">
                                             </span>
                                         </div>
                                     </a>
