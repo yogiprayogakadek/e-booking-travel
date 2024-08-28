@@ -14,14 +14,14 @@
                             Data Package
                         </div>
                         {{-- @can('operator') --}}
-                            <div class="col-6 d-flex align-items-center">
-                                <div class="m-auto"></div>
-                                <a href="{{route('package.create')}}">
-                                    <button type="button" class="btn btn-outline-primary ml-2">
-                                        <i class="nav-icon fa fa-plus-circle font-weight-bold"></i> Add
-                                    </button>
-                                </a>
-                            </div>
+                        <div class="col-6 d-flex align-items-center">
+                            <div class="m-auto"></div>
+                            <a href="{{ route('package.create') }}">
+                                <button type="button" class="btn btn-outline-primary ml-2">
+                                    <i class="nav-icon fa fa-plus-circle font-weight-bold"></i> Add
+                                </button>
+                            </a>
+                        </div>
                         {{-- @endcan --}}
                     </div>
                 </div>
@@ -32,33 +32,39 @@
                             <th></th>
                             <th>Name</th>
                             <th>Price</th>
+                            <th>Quota ({{ $currentMonth }})</th>
                             {{-- <th>Total</th> --}}
                             <th>Status</th>
                             {{-- @can('operator') --}}
-                                <th>Action</th>
-                            {{--@endcan --}}
+                            <th>Action</th>
+                            {{-- @endcan --}}
                         </thead>
                         <tbody>
+                            @php
+                                $quota = 100;
+                            @endphp
                             @foreach ($packages as $package)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td><img src="{{ asset($package->image) }}" width="100px"></td>
                                     <td>{{ json_decode($package->detail, true)['name'] }}</td>
-                                    <td>{{ number_format($package->price, 0,'.','.') }}</td>
+                                    <td>{{ number_format($package->price, 0, '.', '.') }}</td>
+                                    <td>{{ isset($package->orderDetail[0]->quantity) ? $quota - $package->orderDetail[0]->quantity : $quota }}
+                                    </td>
                                     {{-- <td>{{ json_decode($package->detail, true)['total'] }}</td> --}}
                                     <td>
                                         <span
                                             class="badge {{ $package->is_active == true ? 'badge-primary' : 'badge-danger' }}">{{ $package->is_active == true ? 'Active' : 'Inactive' }}</span>
                                     </td>
-                                    {{-- @can('operator')--}}
-                                        <td>
-                                            <a href="{{ route('package.edit', $package->id) }}">
-                                                <button class="btn btn-edit btn-primary">
-                                                    <i class="fa fa-pencil text-white mr-2 pointer"></i> Edit
-                                                </button>
-                                            </a>
-                                        </td>
-                                    {{--@endcan --}}
+                                    {{-- @can('operator') --}}
+                                    <td>
+                                        <a href="{{ route('package.edit', $package->id) }}">
+                                            <button class="btn btn-edit btn-primary">
+                                                <i class="fa fa-pencil text-white mr-2 pointer"></i> Edit
+                                            </button>
+                                        </a>
+                                    </td>
+                                    {{-- @endcan --}}
                                 </tr>
                             @endforeach
                         </tbody>

@@ -99,6 +99,10 @@
                                 min="{{ date('Y-m-d') }}">
                         </div>
 
+                        <div class="col-3 mt-3 will-hide">Visitors Quota <span class="text-muted small">(remaining visitor
+                                quota for selected month)</span></div>
+                        <div class="col-9 mt-3 will-hide destination-quota">100</div>
+
                         <div class="col-3 mt-3 will-hide">Quantity</div>
                         <div class="col-9 mt-3 will-hide">
                             <input type="number" name="quantity" id="quantity" class="form-control quantity"
@@ -170,8 +174,14 @@
                     let package_id = localStorage.getItem('package_id');
                     let date = $(this).val();
                     let data = package_id + '%' + date;
+                    // quantity
                     $.get("/customer/package/order-quantity/" + data, function(quantity) {
                         localStorage.setItem('currentQuantity', quantity);
+                    });
+
+                    // check quota for this month
+                    $.get("/customer/package/check-quota/" + data, function(quota) {
+                        $('.destination-quota').html(quota);
                     });
                 } else {
                     $('.will-hide').prop('hidden', true);
@@ -182,7 +192,7 @@
                 let maxQuantity = 8;
                 let currentQuantity = localStorage.getItem('currentQuantity')
                 let quantity = (parseInt($(this).val()) + parseInt(currentQuantity));
-
+                let remainingQuota = parseInt($('.destination-quota').text());
                 if ($(this).val() != '') {
                     if (parseInt(quantity) > maxQuantity) {
                         $('.quantity').addClass('is-invalid');
@@ -191,11 +201,16 @@
                                 maxQuantity -
                                 currentQuantity) + '</strong> can be order');
                         $('.btn-add').prop('disabled', true)
+                    } else if (parseInt($(this).val()) > parseInt(remainingQuota)) {
+                        $('.quantity').addClass('is-invalid');
+                        $('.error-quantity').html(
+                            'This months quota is limited to 100 visitors. There is still quota left. <strong>' +
+                            remainingQuota);
+                        $('.btn-add').prop('disabled', true)
                     } else {
                         $('.quantity').removeClass('is-invalid');
                         $('.error-quantity').html('');
                         $('.btn-add').prop('disabled', false)
-
                     }
                 } else {
                     $('.quantity').addClass('is-invalid');

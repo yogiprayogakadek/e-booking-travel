@@ -58,6 +58,7 @@ Route::namespace('Customer')->prefix('customer')->as('customer.')->middleware(['
             Route::get('/', 'index')->name('index');
             Route::post('/store', 'store')->name('store');
             Route::get('/order-quantity/{data}', 'orderQuantity')->name('order.quantity');
+            Route::get('/check-quota/{data}', 'checkQuota')->name('check.quota');
         });
 
     Route::controller(CartController::class)

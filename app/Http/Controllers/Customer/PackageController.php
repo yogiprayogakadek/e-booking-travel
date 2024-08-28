@@ -73,4 +73,26 @@ class PackageController extends Controller
 
         return response()->json($quantity);
     }
+
+    public function checkQuota($param)
+    {
+        $data = explode(' ', $param);
+        $package_id = $data[0];
+        $date = $data[1];
+
+        $quota = 100;
+        $data = OrderDetail::with(['order' => function($query) {
+            return $query->where('status', 'Success');
+        }])->where('package_id', $package_id)
+                            ->whereDate('order_date', $date)
+                            ->get();
+
+        if($data) {
+            foreach($data as $d) {
+                $quota -= $d->quantity;
+            }
+        }
+
+        return response()->json($quota);
+    }
 }

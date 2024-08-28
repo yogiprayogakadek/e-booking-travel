@@ -4,14 +4,22 @@ namespace App\Http\Controllers\Main;
 
 use App\Http\Controllers\Controller;
 use App\Models\Package;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class PackageController extends Controller
 {
     public function index()
     {
-        $packages = Package::all();
-        return view('main.package.index', compact('packages'));
+        $month = Carbon::now()->subMonth()->month + 1;
+        $packages = Package::with(['orderDetail' => function($query) use($month) {
+            $query->whereHas('order', function($query) {
+                $query->where('status', 'success');
+            })->whereMonth('order_date', $month);
+        }])->get();
+
+        $currentMonth = month()[$month];
+        return view('main.package.index', compact('packages', 'currentMonth'));
     }
 
     public function create()

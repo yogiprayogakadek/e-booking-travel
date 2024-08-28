@@ -28,4 +28,9 @@ class Package extends Model
             $model->id = str_replace('-','',Uuid::uuid4()->getHex());
         });
     }
+
+    public function orderDetail()
+    {
+        return $this->hasMany(OrderDetail::class, 'package_id', 'id');
+    }
 }
