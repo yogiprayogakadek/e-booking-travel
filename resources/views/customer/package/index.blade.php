@@ -194,14 +194,15 @@
                 let quantity = (parseInt($(this).val()) + parseInt(currentQuantity));
                 let remainingQuota = parseInt($('.destination-quota').text());
                 if ($(this).val() != '') {
-                    if (parseInt(quantity) > maxQuantity) {
-                        $('.quantity').addClass('is-invalid');
-                        $('.error-quantity').html(
-                            'Quantity for today reach max quantity to order. Only <strong>' + (
-                                maxQuantity -
-                                currentQuantity) + '</strong> can be order');
-                        $('.btn-add').prop('disabled', true)
-                    } else if (parseInt($(this).val()) > parseInt(remainingQuota)) {
+                    // if (parseInt(quantity) > maxQuantity) {
+                    //     $('.quantity').addClass('is-invalid');
+                    //     $('.error-quantity').html(
+                    //         'Quantity for today reach max quantity to order. Only <strong>' + (
+                    //             maxQuantity -
+                    //             currentQuantity) + '</strong> can be order');
+                    //     $('.btn-add').prop('disabled', true)
+                    // } else
+                    if (parseInt($(this).val()) > parseInt(remainingQuota)) {
                         $('.quantity').addClass('is-invalid');
                         $('.error-quantity').html(
                             'This months quota is limited to 100 visitors. There is still quota left. <strong>' +
